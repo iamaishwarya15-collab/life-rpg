@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TEST DASHBOARD 123</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: #eee7ff;
+            font-family: Georgia, serif;
+            background:
+                radial-gradient(circle at 75% 10%, #48306d 0%, transparent 28%),
+                radial-gradient(circle at 10% 90%, #17274d 0%, transparent 35%),
+                linear-gradient(135deg, #080b18, #11152b 55%, #0b0d1b);
+        }
+
+        /* SIDE BAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 230px;
+            height: 100vh;
+            padding: 30px 18px;
+            background: rgba(10, 12, 27, 0.94);
+            border-right: 1px solid rgba(190, 155, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            z-index: 999;
+        }
+
+        .brand {
+            text-align: center;
+            color: #dcbaff;
+            letter-spacing: 4px;
+            font-size: 25px;
+            margin-bottom: 35px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 13px 15px;
+            margin: 5px 0;
+            color: #c9c0df;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: .25s;
+        }
+
+        .sidebar a:hover,
+        .sidebar .active {
+            background: rgba(130, 91, 190, .22);
+            color: #f2ddff;
+            box-shadow: inset 3px 0 #b982ff;
+            transform: translateX(3px);
+        }
+
+        .logout {
+            margin-top: auto !important;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 230px;
+            padding: 35px;
+            max-width: 1450px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome small {
+            color: #9e94b8;
+        }
+
+        .welcome h1 {
+            margin: 6px 0;
+            font-size: 34px;
+            color: #f0dcff;
+        }
+
+        /* PLAYER CARD */
+
+        .player-card {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+            padding: 28px;
+            border-radius: 24px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(50, 37, 82, .94),
+                    rgba(18, 24, 52, .94)
+                );
+            border: 1px solid rgba(210, 175, 255, .2);
+            box-shadow: 0 20px 55px rgba(0,0,0,.35);
+        }
+
+        .level {
+            color: #c99aff;
+            font-size: 15px;
+            letter-spacing: 2px;
+        }
+
+        .level-number {
+            font-size: 45px;
+            margin: 8px 0;
+            color: #fff0ff;
+        }
+
+        .xp-label {
+            display: flex;
+            justify-content: space-between;
+            color: #c6bdd7;
+            margin-bottom: 8px;
+        }
+
+        .xp-bar {
+            width: 100%;
+            height: 16px;
+            background: #080a15;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(200,160,255,.2);
+        }
+
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7250b5, #c891ff);
+            box-shadow: 0 0 18px rgba(190,130,255,.7);
+            border-radius: 20px;
+        }
+
+        /* QUICK STATS */
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .quick-stat {
+            padding: 18px;
+            border-radius: 17px;
+            background: rgba(7, 10, 25, .48);
+            border: 1px solid rgba(200,160,255,.13);
+        }
+
+        .quick-stat span {
+            color: #948ba9;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .quick-stat strong {
+            display: block;
+            margin-top: 7px;
+            font-size: 23px;
+            color: #e9d5ff;
+        }
+
+        /* SECTIONS */
+
+        .section-title {
+            margin: 32px 0 15px;
+            color: #e4d2ff;
+            font-size: 22px;
+        }
+
+        /* ATTRIBUTES */
+
+        .attributes {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .attribute {
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(27, 28, 55, .78);
+            border: 1px solid rgba(180,150,230,.15);
+            transition: .25s;
+        }
+
+        .attribute:hover {
+            transform: translateY(-4px);
+            background: rgba(46, 38, 75, .9);
+            box-shadow: 0 12px 30px rgba(0,0,0,.25);
+        }
+
+        .attribute-icon {
+            font-size: 28px;
+        }
+
+        .attribute-name {
+            color: #aaa1bd;
+            margin-top: 10px;
+        }
+
+        .attribute-value {
+            color: #f0dcff;
+            font-size: 26px;
+            margin-top: 5px;
+        }
+
+        /* QUEST BOARD */
+
+        .quest-board {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .quest-card {
+            padding: 22px;
+            border-radius: 20px;
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(48,37,78,.92),
+                    rgba(20,23,48,.94)
+                );
+            border: 1px solid rgba(195,155,255,.2);
+            transition: .3s;
+        }
+
+        .quest-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(120,80,190,.22);
+        }
+
+        .quest-card h3 {
+            margin-top: 0;
+            color: #ead5ff;
+        }
+
+        .quest-description {
+            color: #bcb3ce;
+            line-height: 1.5;
+        }
+
+        .quest-meta {
+            color: #a99fbb;
+            font-size: 14px;
+            margin: 12px 0;
+        }
+
+        .quest-card a {
+            color: #d4aaff;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        .quest-card a:hover {
+            color: white;
+        }
+
+        .delete-button {
+            background: #633b78;
+            color: white;
+            border: none;
+            padding: 8px 13px;
+            border-radius: 9px;
+            cursor: pointer;
+        }
+
+        /* REALM */
+
+        .realm {
+            min-height: 180px;
+            padding: 25px;
+            border-radius: 22px;
+            background:
+                radial-gradient(circle at 50% 30%, rgba(104,80,170,.28), transparent 35%),
+                linear-gradient(135deg, rgba(22,34,65,.9), rgba(25,20,45,.95));
+            border: 1px solid rgba(180,160,240,.18);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stars {
+            font-size: 15px;
+            letter-spacing: 15px;
+            color: #d9c5ff;
+            opacity: .7;
+        }
+
+        .realm-name {
+            margin-top: 45px;
+            font-size: 25px;
+            color: #eadcff;
+        }
+
+        .realm p {
+            color: #aaa3b9;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .sidebar a {
+                display: inline-block;
+            }
+
+            .logout {
+                margin-top: 0 !important;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .player-card,
+            .quest-board {
+                grid-template-columns: 1fr;
+            }
+
+            .attributes {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .main {
+                padding: 18px;
+            }
+
+            .attributes,
+            .quick-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+        ⚔️ LIFE<br>RPG
+    </div>
+
+    <a class="active" href="{% url 'dashboard' %}">
+        🏠 Dashboard
+    </a>
+
+    <a href="{% url 'shop' %}">
+        🛒 Shop
+    </a>
+
+    <a href="{% url 'inventory' %}">
+        🎒 Inventory
+    </a>
+
+    <a href="{% url 'achievements' %}">
+        🏆 Achievements
+    </a>
+
+    <a class="logout" href="{% url 'logout' %}">
+        🚪 Logout
+    </a>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <div class="welcome">
+        <small>ADVENTURER'S JOURNAL</small>
+        <h1>Welcome back, {{ request.user.username }} ⚔️</h1>
+    </div>
+
+
+    <!-- PLAYER -->
+
+    <section class="player-card">
+
+        <div>
+
+            <div class="level">
+                CURRENT LEVEL
+            </div>
+
+            <div class="level-number">
+                ⭐ {{ character.level }}
+            </div>
+
+            <div class="xp-label">
+                <span>Experience</span>
+                <span>{{ character.xp }} XP</span>
+            </div>
+
+            <div class="xp-bar">
+                <div
+                    class="xp-fill"
+                    style="width: {{ character.xp }}%;">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="quick-stats">
+
+            <div class="quick-stat">
+                <span>GOLD</span>
+                <strong>🪙 {{ character.gold }}</strong>
+            </div>
+
+            <div class="quick-stat">
+                <span>STREAK</span>
+                <strong>🔥 {{ character.streak }}</strong>
+            </div>
+
+            <div class="quick-stat">
+                <span>QUESTS</span>
+                <strong>📜 {{ quests|length }}</strong>
+            </div>
+
+            <div class="quick-stat">
+                <span>REALM</span>
+                <strong>🌙 Scholar</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="top-rewards">
+      <span>⚡ {{ character.xp }} XP</span>
+    </div>
+
+    <!-- ATTRIBUTES -->
+
+    <h2 class="section-title">
+        🧬 Character Attributes
+    </h2>
+
+    <section class="attributes">
+
+        <div class="attribute">
+            <div class="attribute-icon">💪</div>
+            <div class="attribute-name">Strength</div>
+            <div class="attribute-value">
+                {{ character.strength }}
+            </div>
+        </div>
+
+        <div class="attribute">
+            <div class="attribute-icon">🧠</div>
+            <div class="attribute-name">Intelligence</div>
+            <div class="attribute-value">
+                {{ character.intelligence }}
+            </div>
+        </div>
+
+        <div class="attribute">
+            <div class="attribute-icon">📖</div>
+            <div class="attribute-name">Wisdom</div>
+            <div class="attribute-value">
+                {{ character.wisdom }}
+            </div>
+        </div>
+
+        <div class="attribute">
+            <div class="attribute-icon">🎨</div>
+            <div class="attribute-name">Creativity</div>
+            <div class="attribute-value">
+                {{ character.creativity }}
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- QUESTS -->
+
+
+
+    <h2 class="section-title">
+        📜 Quest Board
+    </h2>
+
+    <section class="quest-board"></section>
+
+        {% for quest in quests %}
+
+        <div class="quest-card">
+
+            <h3>⚔️ {{ quest.title }}</h3>
+
+            <p class="quest-description">
+                {{ quest.description }}
+            </p>
+
+            {% if quest.completed %}
+
+                <p>✅ Quest Completed!</p>
+
+            {% else %}
+
+            <form method="POST" action="{% url 'complete_quest' quest.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">⚔️ Complete</button>
+            </form>
+       
+        
+
+            {% endif %}
+
+            <a href="{% url 'edit_quest' quest.id %}">
+                ✏️ Edit
+            </a>
+
+            <form
+                method="POST"
+                action="{% url 'delete_quest' quest.id %}"
+                style="display:inline;">
+                {% csrf_token %}
+                <button class="delete-button" type="submit">
+                    🗑️ Delete
+                </button>
+            </form>
+
+        </div>
+
+        {% empty %}
+
+        <div class="quest-card">
+            <h3>🌙 Your quest board is empty</h3>
+            <p class="quest-description">
+                Create your first quest and begin your adventure.
+            </p>
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+
+    <!-- REALM -->
+
+    <h2 class="section-title">
+        🗺️ Your Realm
+    </h2>
+
+    <section class="realm">
+
+        <div class="stars">
+            ✦　✧　✦　　✧　✦　　✧　✦
+        </div>
+
+        <div class="realm-name">
+            🏰 The Scholar's Realm
+        </div>
+
+        <p>
+            Every completed quest expands your realm.
+            Keep learning, keep growing.
+        </p>
+
+    </section>
+
+</main>
+
+<script>
+    // Quest completion feedback
+    const questForms = document.querySelectorAll(
+        'form[action*="complete-quest"]'
+    );
+
+    questForms.forEach(form => {
+        form.addEventListener('submit', function () {
+
+            const button = form.querySelector('button');
+
+            if (button) {
+                button.disabled = true;
+                button.innerHTML = "✨ Quest Complete!";
+            }
+
+            // Floating XP notification
+            const xp = document.createElement("div");
+            xp.innerHTML = "⚡ +10 XP";
+            xp.className = "reward-popup xp-popup";
+            document.body.appendChild(xp);
+
+            setTimeout(() => {
+                xp.remove();
+            }, 1500);
+
+            // Floating gold notification
+            setTimeout(() => {
+                const gold = document.createElement("div");
+                gold.innerHTML = "🪙 +5 Gold";
+                gold.className = "reward-popup gold-popup";
+                document.body.appendChild(gold);
+
+                setTimeout(() => {
+                    gold.remove();
+                }, 1500);
+            }, 250);
+        });
+    });
+</script>
+
+<style>
+    .reward-popup {
+        position: fixed;
+        left: 50%;
+        top: 45%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+
+        padding: 14px 25px;
+        border-radius: 15px;
+
+        background: rgba(25, 15, 45, 0.96);
+        border: 1px solid rgba(210, 170, 255, 0.35);
+
+        box-shadow: 0 15px 45px rgba(0,0,0,.5);
+
+        font-size: 20px;
+        font-weight: bold;
+
+        animation: rewardFloat 1.5s ease forwards;
+        pointer-events: none;
+    }
+
+    .xp-popup {
+        color: #d8b4fe;
+    }
+
+    .gold-popup {
+        color: #f6d77a;
+    }
+
+    @keyframes rewardFloat {
+        0% {
+            opacity: 0;
+            transform: translate(-50%, 20px) scale(.8);
+        }
+
+        20% {
+            opacity: 1;
+            transform: translate(-50%, 0) scale(1);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translate(-50%, -100px) scale(1.05);
+        }
+    }
+
+    button:disabled {
+        opacity: .7;
+        cursor: wait;
+    }
+
+ .top-rewards {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.top-rewards span {
+    padding: 8px 14px;
+    border-radius: 10px;
+    background: rgba(35, 22, 55, 0.8);
+    color: #ead8ff;
+    font-weight: bold;
+}
+
+</style>
+
+</body>
+</html>

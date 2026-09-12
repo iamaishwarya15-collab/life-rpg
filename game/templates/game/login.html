@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Life RPG - Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Georgia, serif;
+            color: #f5edff;
+
+            background:
+                radial-gradient(circle at 20% 20%, rgba(130,80,190,.25), transparent 30%),
+                radial-gradient(circle at 80% 80%, rgba(80,50,150,.25), transparent 35%),
+                linear-gradient(135deg, #080611, #160d27, #090611);
+        }
+
+        .login-box {
+            width: 420px;
+            padding: 42px;
+            border-radius: 25px;
+
+            background: rgba(25,17,43,.88);
+            border: 1px solid rgba(210,170,255,.2);
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,.55),
+                0 0 35px rgba(130,80,190,.12);
+
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 42px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 25px rgba(190,130,255,.6);
+        }
+
+        h1 {
+            margin: 5px 0;
+            color: #e7d0ff;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            color: #9f92ad;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin: 15px 0 7px;
+            color: #cdbce0;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(210,170,255,.18);
+            background: rgba(8,5,16,.7);
+            color: white;
+            outline: none;
+            font-size: 15px;
+        }
+
+        input:focus {
+            border-color: #a66ee8;
+            box-shadow: 0 0 15px rgba(160,100,230,.2);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+
+            background: linear-gradient(90deg, #7046a5, #9b63d0);
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+
+            transition: .25s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(150,90,220,.35);
+        }
+
+        .error {
+            margin-top: 15px;
+            color: #ff9b9b;
+        }
+
+        .signup {
+            margin-top: 25px;
+            color: #9f92ad;
+        }
+
+        a {
+            color: #c89cff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <div class="logo">⚔️</div>
+
+        <h1>LIFE RPG</h1>
+
+        <p class="subtitle">Enter your adventure</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Adventurer Name</label>
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter username"
+                required
+            >
+
+            <label>Password</label>
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                required
+            >
+
+            <button type="submit">
+                ⚔️ Enter the Realm
+            </button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <p class="signup">
+            New adventurer?
+            <a href="{% url 'signup' %}">Create an account</a>
+        </p>
+
+    </div>
+
+</body>
+</html>

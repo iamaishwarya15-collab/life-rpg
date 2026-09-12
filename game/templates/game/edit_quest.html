@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Life RPG - Edit Quest</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Georgia, serif;
+            color: #f5edff;
+            background:
+                radial-gradient(circle at 80% 10%, rgba(130,80,190,.25), transparent 30%),
+                radial-gradient(circle at 20% 90%, rgba(70,50,130,.25), transparent 35%),
+                linear-gradient(135deg, #080611, #120c20, #090611);
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            padding: 30px 18px;
+            background: rgba(12,8,24,.94);
+            border-right: 1px solid rgba(200,160,255,.15);
+        }
+
+        .logo {
+            text-align: center;
+            color: #d8b4fe;
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 35px;
+            text-shadow: 0 0 15px rgba(190,130,255,.6);
+        }
+
+        .nav a {
+            display: block;
+            padding: 14px 16px;
+            margin: 8px 0;
+            border-radius: 12px;
+            color: #bdb0d0;
+            text-decoration: none;
+            transition: .25s;
+        }
+
+        .nav a:hover {
+            color: white;
+            background: rgba(130,85,190,.25);
+            transform: translateX(4px);
+        }
+
+        .main {
+            margin-left: 240px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .quest-box {
+            width: 620px;
+            padding: 40px;
+            border-radius: 25px;
+            background: rgba(25,17,43,.9);
+            border: 1px solid rgba(210,170,255,.2);
+            box-shadow: 0 25px 70px rgba(0,0,0,.45);
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .heading .icon {
+            font-size: 48px;
+        }
+
+        h1 {
+            margin: 8px 0;
+            color: #ead8ff;
+            letter-spacing: 2px;
+        }
+
+        .heading p {
+            color: #9f92ad;
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 8px;
+            color: #d2c1e3;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(210,170,255,.18);
+            background: rgba(8,5,16,.75);
+            color: white;
+            outline: none;
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        select option {
+            background: #160d27;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #a66ee8;
+            box-shadow: 0 0 15px rgba(160,100,230,.2);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 28px;
+            padding: 15px;
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(90deg, #7046a5, #9b63d0);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(150,90,220,.35);
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #b99bdd;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 25px;
+            }
+
+            .quest-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            ⚔️ LIFE RPG
+        </div>
+
+        <div class="nav">
+            <a href="{% url 'dashboard' %}">🏠 Dashboard</a>
+            <a href="{% url 'shop' %}">🛒 Shop</a>
+            <a href="{% url 'inventory' %}">🎒 Inventory</a>
+            <a href="{% url 'achievements' %}">🏆 Achievements</a>
+            <a href="{% url 'logout' %}">🚪 Logout</a>
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <div class="quest-box">
+
+            <div class="heading">
+                <div class="icon">✏️</div>
+                <h1>EDIT QUEST</h1>
+                <p>Refine your challenge, adventurer.</p>
+            </div>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <label>Quest Title</label>
+                <input
+                    type="text"
+                    name="title"
+                    value="{{ quest.title }}"
+                    required
+                >
+
+                <label>Quest Description</label>
+                <textarea
+                    name="description"
+                >{{ quest.description }}</textarea>
+
+                <label>Quest Category</label>
+                <select name="category" required>
+                    <option value="Coding" {% if quest.category == "Coding" %}selected{% endif %}>
+                        🧠 Coding
+                    </option>
+
+                    <option value="Study" {% if quest.category == "Study" %}selected{% endif %}>
+                        📖 Study
+                    </option>
+
+                    <option value="Exercise" {% if quest.category == "Exercise" %}selected{% endif %}>
+                        💪 Exercise
+                    </option>
+
+                    <option value="Creativity" {% if quest.category == "Creativity" %}selected{% endif %}>
+                        🎨 Creativity
+                    </option>
+                </select>
+
+                <button type="submit">
+                    ✨ Save Changes
+                </button>
+
+            </form>
+
+            <a class="back" href="{% url 'dashboard' %}">
+                ← Return to Dashboard
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

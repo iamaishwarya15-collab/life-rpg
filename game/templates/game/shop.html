@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Life RPG - Shop</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: #eee7ff;
+            font-family: Georgia, serif;
+            background:
+                radial-gradient(circle at 75% 10%, #48306d 0%, transparent 28%),
+                radial-gradient(circle at 10% 90%, #17274d 0%, transparent 35%),
+                linear-gradient(135deg, #080b18, #11152b 55%, #0b0d1b);
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 230px;
+            height: 100vh;
+            padding: 30px 18px;
+            background: rgba(10,12,27,.94);
+            border-right: 1px solid rgba(190,155,255,.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            text-align: center;
+            color: #dcbaff;
+            letter-spacing: 4px;
+            font-size: 25px;
+            margin-bottom: 35px;
+        }
+
+        .sidebar a {
+            padding: 13px 15px;
+            margin: 5px 0;
+            color: #c9c0df;
+            text-decoration: none;
+            border-radius: 12px;
+        }
+
+        .sidebar a:hover,
+        .active {
+            background: rgba(130,91,190,.22);
+            color: #fff;
+            box-shadow: inset 3px 0 #b982ff;
+        }
+
+        .logout {
+            margin-top: auto !important;
+        }
+
+        .main {
+            margin-left: 230px;
+            padding: 40px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header small {
+            color: #9e94b8;
+            letter-spacing: 2px;
+        }
+
+        .header h1 {
+            color: #f0dcff;
+            font-size: 36px;
+            margin: 8px 0;
+        }
+
+        .header p {
+            color: #aaa3b9;
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .item {
+            padding: 25px;
+            min-height: 230px;
+            border-radius: 22px;
+            background: linear-gradient(
+                145deg,
+                rgba(48,37,78,.94),
+                rgba(18,23,48,.96)
+            );
+            border: 1px solid rgba(195,155,255,.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,.25);
+            transition: .3s;
+        }
+
+        .item:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 18px 40px rgba(130,80,190,.3);
+        }
+
+        .item h2 {
+            color: #ead5ff;
+            margin-top: 0;
+        }
+
+        .item p {
+            color: #bdb4cf;
+            line-height: 1.5;
+        }
+
+        .price {
+            color: #e5c17b !important;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        button {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 11px;
+            background: linear-gradient(135deg,#7046a5,#9866d0);
+            color: white;
+            cursor: pointer;
+            font-family: Georgia, serif;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(185,130,255,.5);
+        }
+
+        @media(max-width:900px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .shop-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media(max-width:550px) {
+            .main {
+                padding: 20px;
+            }
+
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="brand">
+        ⚔️ LIFE<br>RPG
+    </div>
+
+    <a href="{% url 'dashboard' %}">🏠 Dashboard</a>
+
+    <a class="active" href="{% url 'shop' %}">🛒 Shop</a>
+
+    <a href="{% url 'inventory' %}">🎒 Inventory</a>
+
+    <a href="{% url 'achievements' %}">🏆 Achievements</a>
+
+    <a class="logout" href="{% url 'logout' %}">🚪 Logout</a>
+
+</aside>
+
+
+<main class="main">
+
+    <div class="header">
+        <small>THE ADVENTURER'S MARKET</small>
+        <h1>🛒 Magical Shop</h1>
+        <p>Spend your hard-earned gold on items for your journey.</p>
+    </div>
+
+
+    <div class="shop-grid">
+
+        {% for item in items %}
+
+        <div class="item">
+
+            <h2>{{ item.name }}</h2>
+
+            <p>{{ item.description }}</p>
+
+            <p class="price">
+                🪙 {{ item.price }} Gold
+            </p>
+
+            <form method="POST" action="{% url 'buy_item' item.id %}">
+                {% csrf_token %}
+                <button type="submit">
+                    ✨ Purchase
+                </button>
+            </form>
+
+        </div>
+
+        {% empty %}
+
+        <div class="item">
+            <h2>🌙 Shop is Empty</h2>
+            <p>No magical items are available yet.</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+</body>
+</html>
